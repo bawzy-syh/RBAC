@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.syh.RBAC.mapper.RsaKeyMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.syh.RBAC.model.RsaKey">
+        <id column="key_id" property="keyId" />
+        <result column="private_key" property="privateKey" />
+        <result column="public_key" property="publicKey" />
+        <result column="deprecate_time" property="deprecateTime" />
+        <result column="abandon_time" property="abandonTime" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+</mapper>
