@@ -1,5 +1,6 @@
 package org.syh.RBAC.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
 import org.slf4j.Logger;
@@ -7,8 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.syh.RBAC.common.JsonResponse;
+import org.syh.RBAC.model.Privilege;
+import org.syh.RBAC.service.PrivilegeService;
 import org.syh.RBAC.service.RolePrivilegeRelationService;
 import org.syh.RBAC.model.RolePrivilegeRelation;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -28,7 +34,8 @@ public class RolePrivilegeRelationController {
 
     @Autowired
     private RolePrivilegeRelationService rolePrivilegeRelationService;
-
+    @Autowired
+    private PrivilegeService privilegeService;
     /**
     * 描述：根据Id 查询
     *
@@ -72,9 +79,16 @@ public class RolePrivilegeRelationController {
     */
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResponse getList() throws Exception {
-        Object result = rolePrivilegeRelationService.list(null);
-        return JsonResponse.success(result);
+    public JsonResponse getList(@RequestParam("roleID") Long roleID) throws Exception {
+        QueryWrapper<RolePrivilegeRelation> wrapper = new QueryWrapper<>();
+        wrapper.eq("roleID",roleID);
+        List<RolePrivilegeRelation> result = rolePrivilegeRelationService.list(wrapper);
+        List<Privilege> resp = new ArrayList<>();
+        for (RolePrivilegeRelation item: result) {
+            Privilege privilege = privilegeService.getById(item.getPrivilegeID());
+            resp.add(privilege);
+        }
+        return JsonResponse.success(resp);
     }
 
 }

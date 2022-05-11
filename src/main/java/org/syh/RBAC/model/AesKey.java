@@ -1,5 +1,6 @@
 package org.syh.RBAC.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.time.LocalDateTime;
@@ -28,7 +29,7 @@ public class AesKey extends Model<AesKey> {
 
     @TableId
     private Long keyId;
-
+    @TableField("`key`")
     private String key;
 
     private LocalDateTime deprecateTime;
