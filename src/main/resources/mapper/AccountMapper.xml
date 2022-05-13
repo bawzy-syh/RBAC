@@ -11,4 +11,9 @@
         <result column="create_time" property="createTime" />
     </resultMap>
 
+    <select id="getUserRole" resultType="java.lang.String">
+        SELECT role_name
+        FROM `role`,user_role_relation
+        WHERE `role`.roleID = user_role_relation.roleID AND user_role_relation.userID=#{uid}
+    </select>
 </mapper>

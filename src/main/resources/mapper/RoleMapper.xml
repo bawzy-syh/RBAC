@@ -11,4 +11,9 @@
         <result column="create_time" property="createTime" />
     </resultMap>
 
+    <select id="getPrivilegeList" resultType="java.lang.String">
+        SELECT privilege_name
+        FROM privilege, role_privilege_relation
+        WHERE privilege.privilegeID = role_privilege_relation.privilegeID AND role_privilege_relation.roleID=#{roleID}
+    </select>
 </mapper>

@@ -7,8 +7,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.syh.RBAC.common.JsonResponse;
+import org.syh.RBAC.model.AccountResponse;
 import org.syh.RBAC.service.AccountService;
 import org.syh.RBAC.model.Account;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -85,8 +89,18 @@ public class AccountController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
     public JsonResponse getList() throws Exception {
-        Object result = accountService.list(null);
-        return JsonResponse.success(result);
+        List<Account> result = accountService.list(null);
+        List<AccountResponse> resp = new ArrayList<>();
+        for (Account account: result){
+            List<String> roles = accountService.getUserRole(account.getUid());
+            StringBuilder roleNames = new StringBuilder();
+            for (String roleName: roles){
+                roleNames.append(roleName);
+                roleNames.append(' ');
+            }
+            resp.add(new AccountResponse(account, roleNames.toString()));
+        }
+        return JsonResponse.success(resp);
     }
 
 }

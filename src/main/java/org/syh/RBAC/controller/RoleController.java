@@ -7,8 +7,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.syh.RBAC.common.JsonResponse;
+import org.syh.RBAC.model.RoleResponse;
 import org.syh.RBAC.service.RoleService;
 import org.syh.RBAC.model.Role;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -83,8 +87,18 @@ public class RoleController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
     public JsonResponse getList() throws Exception {
-        Object result = roleService.list(null);
-        return JsonResponse.success(result);
+        List<Role> result = roleService.list(null);
+        List<RoleResponse> resp = new ArrayList<>();
+        for (Role role: result){
+            StringBuilder stringBuilder = new StringBuilder();
+            List<String> priName = roleService.getPrivilegeList(role.getRoleID());
+            for (String name: priName){
+                stringBuilder.append(name);
+                stringBuilder.append(' ');
+            }
+            resp.add(new RoleResponse(role, stringBuilder.toString()));
+        }
+        return JsonResponse.success(resp);
     }
 
 }
